@@ -21,6 +21,7 @@ const getAllUser = catchAsync(async (req, res, next) => {
     status: 'success',
     data: { user },
   });
+  next();
 });
 
 const createUser = catchAsync(async (req, res, next) => {
@@ -42,6 +43,7 @@ const createUser = catchAsync(async (req, res, next) => {
     status: 'success',
     data: { newUser },
   });
+  next();
 });
 
 const updateUser = catchAsync(async (req, res, next) => {
@@ -54,6 +56,7 @@ const updateUser = catchAsync(async (req, res, next) => {
     status: 'success',
     data: { user },
   });
+  next();
 });
 
 const deleteUser = catchAsync(async (req, res, next) => {
@@ -62,6 +65,7 @@ const deleteUser = catchAsync(async (req, res, next) => {
   await user.update({ status: 'cancelled' });
 
   res.status(204).json({ status: 'success' });
+  next();
 });
 
 const login = catchAsync(async (req, res, next) => {
@@ -85,6 +89,7 @@ const login = catchAsync(async (req, res, next) => {
     status: 'success',
     data: { user, token },
   });
+  next();
 });
 
 module.exports = {

@@ -26,20 +26,22 @@ const getOneOrder = catchAsync(async (req, res) => {
 
 const createOrder = catchAsync(async (req, res) => {
   const { mealId, quantity } = req.body;
+  const { userId, totalPrice } = req.params;
 
-  // const meal = await Meal.findOne({ where: { id: mealId } });
+  const meal = await Meal.findOne({ where: { id: mealId } });
 
   // if (!meal) {
-  //   // Send error
+  // Send error
   // }
 
-  // meal.price * quantity;
-
   // chequear esta solucion
-
+  const Price = meal.price * quantity;
   const newOrder = await Order.create({
     mealId,
     quantity,
+    userId,
+    totalPrice,
+    Price,
   });
 
   res.status(201).json({

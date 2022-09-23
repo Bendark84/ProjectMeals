@@ -10,7 +10,10 @@ const {
 
 //Middleware
 const { mealExists } = require('../middlewares/meals.middlewares');
-const { protectSession } = require('../middlewares/auth.middlewares');
+const {
+  protectSession,
+  protectMealOwners,
+} = require('../middlewares/auth.middlewares');
 
 const mealRoutes = express.Router();
 

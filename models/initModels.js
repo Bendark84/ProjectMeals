@@ -9,6 +9,10 @@ const initModels = () => {
   User.hasMany(Review, { foreignKey: 'userId' });
   Review.belongsTo(User);
 
+  //1 Review <-------> 1 User //!Revisar no funciona
+  Review.hasOne(User, { foreignKey: 'userId' });
+  User.belongsTo(Review);
+
   // 1 User <-------> M Orders
   User.hasMany(Order, { foreignKey: 'userId' });
   Order.belongsTo(User);

@@ -17,8 +17,8 @@ reviewRoutes.get('/', getAllReviews);
 
 reviewRoutes.use(protectSession);
 
-reviewRoutes.post('/reviews/:restaurantId', createReview);
-reviewRoutes.patch('/reviews/:id', reviewExists, updateReview);
-reviewRoutes.delete('/reviews/:id', reviewExists, deleteReview);
+reviewRoutes.post('/:restaurantId', createReview);
+reviewRoutes.patch('/:id', reviewExists, updateReview);
+reviewRoutes.delete('/:id', reviewExists, deleteReview);
 
 module.exports = { reviewRoutes };

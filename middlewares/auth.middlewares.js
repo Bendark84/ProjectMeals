@@ -72,8 +72,19 @@ const protectAdmin = (req, res, next) => {
   next();
 };
 
+const protectMealOwners = (req, res, next) => {
+  const { sessionUser, meal } = req;
+
+  if (sessionUser.id !== meal.id) {
+    return next(new AppError('This meal does not belong to you.', 403));
+  }
+
+  next();
+};
+
 module.exports = {
   protectSession,
   protectUsersAccount,
   protectAdmin,
+  protectMealOwners,
 };
