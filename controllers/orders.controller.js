@@ -1,69 +1,76 @@
+const { Meal } = require('../models/meals.model');
 const { Order } = require('../models/orders.model');
+const { catchAsync } = require('../utils/catchAsync.util');
 
-const getAllOrder = async (req, res) => {
-  try {
-    const order = await Order.findAll({
-      where: { status: 'active' },
-    });
+const getAllOrder = catchAsync(async (req, res) => {
+  const order = await Order.findAll({
+    where: { status: 'active' },
+  });
 
-    res.status(200).json({
-      status: 'success',
-      data: { order },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+  res.status(200).json({
+    status: 'success',
+    data: { order },
+  });
+});
 
-const createOrder = async (req, res) => {
-  try {
-    const { mealId, userId, quantity } = req.body;
+const getOneOrder = catchAsync(async (req, res) => {
+  const order = await Order.findOne({
+    where: { status: 'active' },
+  });
 
-    const newOrder = await Order.create({
-      mealId,
-      userId,
-      quantity,
-    });
+  res.status(200).json({
+    status: 'success',
+    data: { order },
+  });
+});
 
-    res.status(201).json({
-      status: 'success',
-      data: { newOrder },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+const createOrder = catchAsync(async (req, res) => {
+  const { mealId, quantity } = req.body;
 
-const updateOrder = async (req, res) => {
-  try {
-    const { status } = req.body;
-    const { order } = req;
+  // const meal = await Meal.findOne({ where: { id: mealId } });
 
-    await order.update({ status });
+  // if (!meal) {
+  //   // Send error
+  // }
 
-    res.status(200).json({
-      status: 'success',
-      data: { order },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+  // meal.price * quantity;
 
-const deleteOrder = async (req, res) => {
-  try {
-    const { order } = req;
+  // chequear esta solucion
 
-    await order.update({ status: 'cancelled' });
+  const newOrder = await Order.create({
+    mealId,
+    quantity,
+  });
 
-    res.status(204).json({ status: 'success' });
-  } catch (error) {
-    console.log(error);
-  }
-};
+  res.status(201).json({
+    status: 'success',
+    data: { newOrder },
+  });
+});
+
+const updateOrder = catchAsync(async (req, res) => {
+  const { status } = req.body;
+  const { order } = req;
+
+  await order.update({ status });
+
+  res.status(200).json({
+    status: 'success',
+    data: { order },
+  });
+});
+
+const deleteOrder = catchAsync(async (req, res) => {
+  const { order } = req;
+
+  await order.update({ status: 'cancelled' });
+
+  res.status(204).json({ status: 'success' });
+});
 
 module.exports = {
   getAllOrder,
+  getOneOrder,
   createOrder,
   updateOrder,
   deleteOrder,

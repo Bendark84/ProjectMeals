@@ -1,23 +1,18 @@
 const { Meal } = require('../models/meals.model');
+const { catchAsync } = require('../utils/catchAsync.util');
+const { AppError } = require('../utils/appError.util');
 
-const mealExists = async (req, res, next) => {
-  try {
-    const { id } = req.params;
+const mealExists = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
 
-    const meal = await Meal.findOne({ where: { id } });
+  const meal = await Meal.findOne({ where: { id, status: 'active' } });
 
-    if (!meal) {
-      return res.status(404).json({
-        status: 'error',
-        message: 'Meal not Found',
-      });
-    }
-    req.meal = meal;
-    next();
-  } catch (error) {
-    console.log(error);
+  if (!meal) {
+    return next(new AppError('Meal not Found', 404));
   }
-};
+  req.meal = meal;
+  next();
+});
 
 module.exports = {
   mealExists,

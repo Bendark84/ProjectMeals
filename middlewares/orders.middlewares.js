@@ -1,23 +1,18 @@
 const { Order } = require('../models/orders.model');
+const { catchAsync } = require('../utils/catchAsync.util');
+const { AppError } = require('../utils/appError.util');
 
-const orderExists = async (req, res, next) => {
-  try {
-    const { id } = req.params;
+const orderExists = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
 
-    const order = await Order.findOne({ where: { id } });
+  const order = await Order.findOne({ where: { id, status: 'active' } });
 
-    if (!order) {
-      return res.status(404).json({
-        status: 'error',
-        message: 'Order not Found',
-      });
-    }
-    req.order = order;
-    next();
-  } catch (error) {
-    console.log(error);
+  if (!order) {
+    return next(new AppError('Order not Found', 404));
   }
-};
+  req.order = order;
+  next();
+});
 
 module.exports = {
   orderExists,

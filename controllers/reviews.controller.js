@@ -1,67 +1,51 @@
 const { Review } = require('../models/reviews.model');
 
-const getAllReviews = async (req, res) => {
-  try {
-    const review = await Review.findAll({
-      // where: { status: 'active' },
-    });
+const { catchAsync } = require('../utils/catchAsync.util');
 
-    res.status(200).json({
-      status: 'success',
-      data: { review },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+const getAllReviews = catchAsync(async (req, res) => {
+  const review = await Review.findAll({
+    // where: { status: 'active' },
+  });
 
-const createReview = async (req, res) => {
-  try {
-    const { userId, comment, restaurantId, rating } = req.body;
+  res.status(200).json({
+    status: 'success',
+    data: { review },
+  });
+});
 
-    const newReview = await Review.create({
-      userId,
-      comment,
-      restaurantId,
-      rating,
-    });
+const createReview = catchAsync(async (req, res) => {
+  const { comment, rating } = req.body;
 
-    res.status(201).json({
-      status: 'success',
-      data: { newReview },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+  const newReview = await Review.create({
+    comment,
+    rating,
+  });
 
-const updateReview = async (req, res) => {
-  try {
-    const { comment, rating } = req.body;
-    const { review } = req;
+  res.status(201).json({
+    status: 'success',
+    data: { newReview },
+  });
+});
 
-    await review.update({ comment, rating });
+const updateReview = catchAsync(async (req, res) => {
+  const { comment, rating } = req.body;
+  const { review } = req;
 
-    res.status(200).json({
-      status: 'success',
-      data: { review },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+  await review.update({ comment, rating });
 
-const deleteReview = async (req, res) => {
-  try {
-    const { review } = req;
+  res.status(200).json({
+    status: 'success',
+    data: { review },
+  });
+});
 
-    await review.update({ status: 'deleted' });
+const deleteReview = catchAsync(async (req, res) => {
+  const { review } = req;
 
-    res.status(204).json({ status: 'success' });
-  } catch (error) {
-    console.log(error);
-  }
-};
+  await review.update({ status: 'deleted' });
+
+  res.status(204).json({ status: 'success' });
+});
 
 module.exports = {
   getAllReviews,

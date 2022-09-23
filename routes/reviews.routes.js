@@ -9,12 +9,16 @@ const {
 
 //Middleware
 const { reviewExists } = require('../middlewares/reviews.middlewares');
+const { protectSession } = require('../middlewares/auth.middlewares');
 
 const reviewRoutes = express.Router();
+
 reviewRoutes.get('/', getAllReviews);
 
-reviewRoutes.post('/', createReview);
-reviewRoutes.patch('/:id', reviewExists, updateReview);
-reviewRoutes.delete('/:id', reviewExists, deleteReview);
+reviewRoutes.use(protectSession);
+
+reviewRoutes.post('/reviews/:restaurantId', createReview);
+reviewRoutes.patch('/reviews/:id', reviewExists, updateReview);
+reviewRoutes.delete('/reviews/:id', reviewExists, deleteReview);
 
 module.exports = { reviewRoutes };

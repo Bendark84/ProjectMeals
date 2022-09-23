@@ -1,69 +1,66 @@
 const { Restaurant } = require('../models/restaurants.model');
+const { catchAsync } = require('../utils/catchAsync.util');
 
-const getAllRestaurant = async (req, res) => {
-  try {
-    const restaurant = await Restaurant.findAll({
-      where: { status: 'active' },
-    });
+const getAllRestaurant = catchAsync(async (req, res) => {
+  const restaurant = await Restaurant.findAll({
+    where: { status: 'active' },
+  });
 
-    res.status(200).json({
-      status: 'success',
-      data: { restaurant },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+  res.status(200).json({
+    status: 'success',
+    data: { restaurant },
+  });
+});
 
-const createRestaurant = async (req, res) => {
-  try {
-    const { name, address, rating } = req.body;
+const getOneRestaurant = catchAsync(async (req, res) => {
+  const restaurant = await Restaurant.findOne({
+    where: { status: 'active' },
+  });
 
-    const newRestaurant = await Restaurant.create({
-      name,
-      address,
-      rating,
-    });
+  res.status(200).json({
+    status: 'success',
+    data: { restaurant },
+  });
+});
 
-    res.status(201).json({
-      status: 'success',
-      data: { newRestaurant },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+const createRestaurant = catchAsync(async (req, res) => {
+  const { name, address, rating } = req.body;
 
-const updateRestaurant = async (req, res) => {
-  try {
-    const { name, address } = req.body;
-    const { restaurant } = req;
+  const newRestaurant = await Restaurant.create({
+    name,
+    address,
+    rating,
+  });
 
-    await restaurant.update({ name, address });
+  res.status(201).json({
+    status: 'success',
+    data: { newRestaurant },
+  });
+});
 
-    res.status(200).json({
-      status: 'success',
-      data: { restaurant },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+const updateRestaurant = catchAsync(async (req, res) => {
+  const { name, address } = req.body;
+  const { restaurant } = req;
 
-const deleteRestaurant = async (req, res) => {
-  try {
-    const { restaurant } = req;
+  await restaurant.update({ name, address });
 
-    await restaurant.update({ status: 'cancelled' });
+  res.status(200).json({
+    status: 'success',
+    data: { restaurant },
+  });
+});
 
-    res.status(204).json({ status: 'success' });
-  } catch (error) {
-    console.log(error);
-  }
-};
+const deleteRestaurant = catchAsync(async (req, res) => {
+  const { restaurant } = req;
+
+  await restaurant.update({ status: 'cancelled' });
+
+  res.status(204).json({ status: 'success' });
+});
 
 module.exports = {
   getAllRestaurant,
+  getOneRestaurant,
   createRestaurant,
   updateRestaurant,
   deleteRestaurant,

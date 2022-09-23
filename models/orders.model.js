@@ -17,7 +17,7 @@ const Order = db.define('order', {
   },
   totalPrice: {
     type: DataTypes.INTEGER,
-    allowNull: true, //Mirar si cambia
+    allowNull: false, //Mirar si cambia
   },
   quantity: {
     type: DataTypes.INTEGER,
